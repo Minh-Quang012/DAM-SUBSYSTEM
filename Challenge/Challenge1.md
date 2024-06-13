@@ -1,6 +1,5 @@
 **Schema (PostgreSQL v15)**
 
-    
     CREATE TABLE sales (
       "customer_id" VARCHAR(1),
       "order_date" DATE,
@@ -111,5 +110,24 @@
 | C           | ramen        |
 
 ---
+**Query #4**
+```sql
+SELECT 
+    m.product_name, 
+    COUNT(s.product_id) AS most_purchased_item 
+FROM 
+    sales s 
+INNER JOIN 
+    menu m ON s.product_id = m.product_id 
+GROUP BY 
+    m.product_name 
+ORDER BY 
+    most_purchased_item DESC 
+LIMIT 1;
+
+| product_name | most_purchased_item |
+|--------------|---------------------|
+| ramen        | 8                   |
+
 
 [View on DB Fiddle](https://www.db-fiddle.com/f/2rM8RAnq7h5LLDTzZiRWcd/7240)
