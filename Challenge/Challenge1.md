@@ -129,5 +129,39 @@ LIMIT 1;
 |--------------|---------------------|
 | ramen        | 8                   |
 
-
 [View on DB Fiddle](https://www.db-fiddle.com/f/2rM8RAnq7h5LLDTzZiRWcd/7240)
+----
+**Query #5**
+
+    WITH most_popular AS (
+    SELECT 
+    	sales.customer_id,
+    	menu.product_name,
+    	COUNT (menu.product_id) AS order_count,
+      	DENSE_RANK () OVER (
+          PARTITION BY sales.customer_id
+        	ORDER BY COUNT(sales.customer_id) DESC) AS RANK
+      FROM menu
+      INNER JOIN sales 
+      ON menu.product_id = sales.product_id
+      GROUP BY sales.customer_id , menu.product_name
+      
+    )
+    SELECT 
+    	customer_id,
+        product_name,
+        order_count
+    from most_popular
+    Where rank=1;
+
+| customer_id | product_name | order_count |
+| ----------- | ------------ | ----------- |
+| A           | ramen        | 3           |
+| B           | ramen        | 2           |
+| B           | curry        | 2           |
+| B           | sushi        | 2           |
+| C           | ramen        | 3           |
+
+---
+
+
