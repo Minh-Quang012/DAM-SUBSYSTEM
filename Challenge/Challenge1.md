@@ -163,5 +163,38 @@ LIMIT 1;
 | C           | ramen        | 3           |
 
 ---
+**Query #6**
+
+    WITH joined_as_member AS (
+      SELECT
+        m.customer_id, 
+        s.product_id,
+        ROW_NUMBER() OVER (
+          PARTITION BY m.customer_id
+          ORDER BY s.order_date) AS row_num
+      FROM members m
+      JOIN sales s
+        ON m.customer_id = s.customer_id
+        AND s.order_date > m.join_date
+    )
+    
+    SELECT 
+      j.customer_id, 
+      menu.product_name 
+    FROM joined_as_member j
+    JOIN menu 
+      ON j.product_id = menu.product_id
+    WHERE j.row_num = 1
+    ORDER BY j.customer_id;
+
+| customer_id | product_name |
+| ----------- | ------------ |
+| A           | ramen        |
+| B           | sushi        |
 
 
+
+
+---
+
+[View on DB Fiddle](https://www.db-fiddle.com/f/2rM8RAnq7h5LLDTzZiRWcd/138)
