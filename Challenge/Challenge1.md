@@ -155,6 +155,8 @@ LIMIT 1;
     from most_popular
     Where rank=1;
 
+
+```
 | customer_id | product_name | order_count |
 | ----------- | ------------ | ----------- |
 | A           | ramen        | 3           |
@@ -162,8 +164,7 @@ LIMIT 1;
 | B           | curry        | 2           |
 | B           | sushi        | 2           |
 | C           | ramen        | 3           |
-
-```
+---
 **Query #6**
 ```sql
     WITH joined_as_member AS (
@@ -187,20 +188,13 @@ LIMIT 1;
       ON j.product_id = menu.product_id
     WHERE j.row_num = 1
     ORDER BY j.customer_id;
-
+[View on DB Fiddle](https://www.db-fiddle.com/f/2rM8RAnq7h5LLDTzZiRWcd/138)
+```
 | customer_id | product_name |
 | ----------- | ------------ |
 | A           | ramen        |
 | B           | sushi        |
-
-
-
-
 ---
-
-[View on DB Fiddle](https://www.db-fiddle.com/f/2rM8RAnq7h5LLDTzZiRWcd/138)
-```
-
 **Query #7**
 ```sql
     SELECT customer_id, product_name
@@ -213,12 +207,25 @@ LIMIT 1;
       WHERE s.order_date < m.join_date
     ) tmp
     WHERE rn = 1;
-
+```
 | customer_id | product_name |
 | ----------- | ------------ |
 | A           | sushi        |
 | B           | sushi        |
-
+---
+**Query #8**
+```sql
+ SELECT m.customer_id, COUNT(*) as total_items, SUM(price) as total_spent
+FROM members m
+JOIN sales s ON m.customer_id = s.customer_id
+JOIN menu ON s.product_id = menu.product_id
+WHERE s.order_date < m.join_date
+GROUP BY m.customer_id
+ORDER BY m.customer_id ASC;
 ```
+| customer_id | total_items | total_spent |
+| ----------- | ----------- | ----------- |
+| A           | 2           | 25          |
+| B           | 3           | 40          |
 
 [View on DB Fiddle](https://www.db-fiddle.com/f/2rM8RAnq7h5LLDTzZiRWcd/138)
