@@ -275,4 +275,48 @@
 
 ---
 
+**Query #9**
+
+    SELECT
+        EXTRACT(HOUR FROM co.order_time) AS order_hour,
+        COUNT(co.order_id) AS total_pizzas_ordered
+    FROM
+        customer_orders co
+    GROUP BY
+        order_hour
+    ORDER BY
+        order_hour;
+
+| order_hour | total_pizzas_ordered |
+| ---------- | -------------------- |
+| 11         | 1                    |
+| 13         | 3                    |
+| 18         | 3                    |
+| 19         | 1                    |
+| 21         | 3                    |
+| 23         | 3                    |
+
+---
+**Query #10**
+
+    SELECT 
+      EXTRACT(ISODOW FROM order_time) AS day_of_week,
+      COUNT(order_id) AS volume_of_orders
+    FROM 
+      customer_orders
+    GROUP BY 
+      day_of_week;
+
+| day_of_week | volume_of_orders |
+| ----------- | ---------------- |
+| 3           | 5                |
+| 4           | 3                |
+| 6           | 5                |
+| 5           | 1                |
+
+---
+B. Runner and customer experience
+---
+
+
 [View on DB Fiddle](https://www.db-fiddle.com/f/7VcQKQwsS3CTkGRFG7vu98/65)
