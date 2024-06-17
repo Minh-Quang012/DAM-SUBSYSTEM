@@ -199,3 +199,26 @@ LIMIT 1;
 ---
 
 [View on DB Fiddle](https://www.db-fiddle.com/f/2rM8RAnq7h5LLDTzZiRWcd/138)
+```
+
+**Query #7**
+```sql
+    SELECT customer_id, product_name
+    FROM (
+      SELECT m.customer_id, menu.product_name, 
+      ROW_NUMBER() OVER(PARTITION BY m.customer_id ORDER BY s.order_date DESC) as rn
+      FROM members m
+      JOIN sales s ON m.customer_id = s.customer_id
+      JOIN menu ON s.product_id = menu.product_id
+      WHERE s.order_date < m.join_date
+    ) tmp
+    WHERE rn = 1;
+
+| customer_id | product_name |
+| ----------- | ------------ |
+| A           | sushi        |
+| B           | sushi        |
+
+```
+
+[View on DB Fiddle](https://www.db-fiddle.com/f/2rM8RAnq7h5LLDTzZiRWcd/138)
