@@ -124,14 +124,15 @@ GROUP BY
 ORDER BY 
     most_purchased_item DESC 
 LIMIT 1;
-
+```
 | product_name | most_purchased_item |
 |--------------|---------------------|
 | ramen        | 8                   |
 
 [View on DB Fiddle](https://www.db-fiddle.com/f/2rM8RAnq7h5LLDTzZiRWcd/7240)
-----
+---
 **Query #5**
+```sql
 
     WITH most_popular AS (
     SELECT 
@@ -162,9 +163,9 @@ LIMIT 1;
 | B           | sushi        | 2           |
 | C           | ramen        | 3           |
 
----
+```
 **Query #6**
-
+```sql
     WITH joined_as_member AS (
       SELECT
         m.customer_id, 
