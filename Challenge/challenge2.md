@@ -317,6 +317,25 @@
 ---
 B. Runner and customer experience
 ---
+**Query #1**
+
+    SELECT 
+      DATE_TRUNC('week', registration_date) AS week,
+      COUNT(runner_id) AS num_runners
+    FROM 
+      runners
+    GROUP BY 
+      week
+    ORDER BY 
+      week;
+
+| week                     | num_runners |
+| ------------------------ | ----------- |
+| 2020-12-28T00:00:00.000Z | 2           |
+| 2021-01-04T00:00:00.000Z | 1           |
+| 2021-01-11T00:00:00.000Z | 1           |
+
+---
 
 
 [View on DB Fiddle](https://www.db-fiddle.com/f/7VcQKQwsS3CTkGRFG7vu98/65)
