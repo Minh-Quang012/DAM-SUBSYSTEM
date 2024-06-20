@@ -227,5 +227,50 @@ ORDER BY m.customer_id ASC;
 | ----------- | ----------- | ----------- |
 | A           | 2           | 25          |
 | B           | 3           | 40          |
+---
+
+**Query #9**
+
+    SELECT customer_id, SUM(points) as total_points
+    FROM (
+      SELECT sales.customer_id, 
+      CASE 
+        WHEN menu.product_name = 'sushi' THEN menu.price * 20
+        ELSE menu.price * 10
+      END as points
+      FROM sales
+      JOIN menu ON sales.product_id = menu.product_id
+    ) tmp
+    GROUP BY customer_id
+    ORDER BY customer_id ASC;
+
+| customer_id | total_points |
+| ----------- | ------------ |
+| A           | 860          |
+| B           | 940          |
+| C           | 360          |
+
+---
+**Query #10**
+
+    SELECT sales.customer_id,
+           SUM(CASE
+                   WHEN sales.order_date BETWEEN members.join_date AND members.join_date + 6 THEN menu.price * 20
+                   WHEN sales.order_date > members.join_date + 6 THEN menu.price * 10
+                   ELSE 0
+               END) as total_points
+    FROM sales
+    JOIN menu ON sales.product_id = menu.product_id
+    JOIN members ON sales.customer_id = members.customer_id
+    WHERE sales.customer_id IN ('A', 'B') AND EXTRACT(MONTH FROM sales.order_date) = 1
+    GROUP BY sales.customer_id;
+
+| customer_id | total_points |
+| ----------- | ------------ |
+| A           | 1020         |
+| B           | 320          |
+
+---
+
 
 [View on DB Fiddle](https://www.db-fiddle.com/f/2rM8RAnq7h5LLDTzZiRWcd/138)
