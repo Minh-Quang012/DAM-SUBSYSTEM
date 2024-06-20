@@ -174,4 +174,21 @@ B.Data Analysis questions
 | 195                               |
 
 ---
+**Query #9**
+
+    WITH annual_upgrade AS (
+        SELECT s.customer_id,
+               MIN(s.start_date) AS join_date,
+               MIN(s.start_date) FILTER (WHERE s.plan_id IN (3)) AS upgrade_to_annual_date
+        FROM subscriptions s
+        GROUP BY s.customer_id
+    )
+    SELECT AVG(upgrade_to_annual_date - join_date) AS average_days_to_upgrade
+    FROM annual_upgrade;
+
+| average_days_to_upgrade |
+| ----------------------- |
+| 104.6201550387596899    |
+
+---
 [View on DB Fiddle](https://www.db-fiddle.com/f/rHJhRrXy5hbVBNJ6F6b9gJ/16)
