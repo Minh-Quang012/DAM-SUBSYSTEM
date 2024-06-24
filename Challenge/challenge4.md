@@ -87,6 +87,48 @@ B. Customer Transaction
 | 5.3420000000000000      | 2718.3360000000000000    |
 
 ---
+**Query #33**
+
+    SELECT r.region_name, COUNT(DISTINCT cn.customer_id) AS customers_per_region
+    FROM regions AS r
+    JOIN customer_nodes AS cn ON r.region_id = cn.region_id
+    GROUP BY r.region_name;
+
+| region_name | customers_per_region |
+| ----------- | -------------------- |
+| Africa      | 102                  |
+| America     | 105                  |
+| Asia        | 95                   |
+| Australia   | 110                  |
+| Europe      | 88                   |
+
+---
+**Query #4**
+
+    SELECT AVG(diff) AS avg_days_allocated
+    FROM (
+      SELECT 
+        customer_id, 
+        node_id, 
+        start_date, 
+        end_date,
+        LEAD(node_id) OVER (PARTITION BY customer_id ORDER BY start_date) AS next_node_id,
+        LEAD(start_date) OVER (PARTITION BY customer_id ORDER BY start_date) AS next_start_date,
+        CASE 
+          WHEN node_id != LEAD(node_id) OVER (PARTITION BY customer_id ORDER BY start_date) THEN
+            end_date - start_date
+          ELSE NULL
+        END AS diff
+      FROM customer_nodes
+    ) AS subquery
+    WHERE diff IS NOT NULL;
+
+| avg_days_allocated  |
+| ------------------- |
+| 14.6301713330547430 |
+
+---
+
 
 
 [View on DB Fiddle](https://www.db-fiddle.com/f/2GtQz4wZtuNNu7zXH5HtV4/3)
