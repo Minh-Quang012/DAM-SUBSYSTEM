@@ -1,1 +1,88 @@
+use DamSystem;
+
+INSERT INTO [User] (username, password, email, role)
+VALUES 
+('john_doe', 'password123', 'john@example.com', 'admin'),
+('jane_smith', 'password456', 'jane@example.com', 'user'),
+('mike_jones', 'password789', 'mike@example.com', 'user');
+GO
+
+INSERT INTO AssetType (name)
+VALUES 
+('Image'),
+('Document'),
+('Video'),
+('Audio');
+GO
+
+INSERT INTO Asset (asset_name, asset_type_id, asset_size, asset_path, owner_id)
+VALUES 
+('image1.jpg', 1, 2.5, 'path/to/image1.jpg', 1),
+('document1.pdf', 2, 1.2, 'path/to/document1.pdf', 2),
+('video1.mp4', 3, 50.0, 'path/to/video1.mp4', 1),
+('audio1.mp3', 4, 3.0, 'path/to/audio1.mp3', 3);
+GO
+
+INSERT INTO Sharing (asset_id, share_with, owner_id, permission)
+VALUES 
+(1, 'jane_smith', 1, 'read'),
+(2, 'john_doe', 2, 'write'),
+(3, 'mike_jones', 1, 'read');
+GO
+
+INSERT INTO Storage (used_capacity, available_capacity, user_id)
+VALUES 
+(10.0, 90.0, 1),
+(20.0, 80.0, 2),
+(30.0, 70.0, 3);
+GO
+
+INSERT INTO Folder (owner_id, folder_name)
+VALUES 
+(1, 'My Pictures'),
+(2, 'Work Documents'),
+(3, 'Music Collection');
+GO
+
+INSERT INTO Comment (asset_id, user_id, content)
+VALUES 
+(1, 2, 'Nice picture!'),
+(2, 1, 'Very informative document.'),
+(3, 3, 'Great video!');
+GO
+
+INSERT INTO AuditLog (user_id, action, asset_id, details)
+VALUES 
+(1, 'upload', 1, 'Uploaded image1.jpg'),
+(2, 'download', 2, 'Downloaded document1.pdf'),
+(3, 'edit', 3, 'Edited video1.mp4');
+GO
+
+INSERT INTO Notification (user_id, message, Status)
+VALUES 
+(1, 'Your upload was successful.', 'unread'),
+(2, 'You have a new message.', 'unread'),
+(3, 'Your file has been shared.', 'unread');
+GO
+
+INSERT INTO DashboardWidget (type, title, data_source)
+VALUES 
+('Chart', 'User Activity', 'activity_data'),
+('Table', 'Storage Usage', 'storage_data'),
+('Graph', 'Asset Downloads', 'download_data');
+GO
+
+INSERT INTO FolderAsset (folder_id, asset_id)
+VALUES 
+(1, 1),
+(2, 2),
+(3, 3);
+GO
+
+INSERT INTO Permission (name)
+VALUES 
+('read'),
+('write'),
+('execute');
+GO
 
